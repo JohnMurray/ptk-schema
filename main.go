@@ -4,11 +4,14 @@ import (
 	"flag"
 )
 
+type command func()
+type description string
+
+/**
+ * Parse incomign flags, dispatch to appropriate command or show help
+ * message.
+ */
 func main() {
-	/*
-	 * Parse incomign flags, dispatch to appropriate command or show help
-	 * message.
-	 */
 	flag.Parse()
 	var args []string = flag.Args()
 
@@ -19,10 +22,10 @@ func main() {
 		commands := getCommands()
 
 		if cmd, ok := commands[args[0]]; ok {
-            cmd()
-        } else {
-            helpCommand()
-        }
+			cmd.command()
+		} else {
+			helpCommand()
+		}
 	}
 }
 
@@ -30,12 +33,23 @@ func main() {
  * Return a map of command-names (from user-input) to functions to
  * run.
  */
-func getCommands() map[string]func() {
-	return map[string]func(){
-		"help": helpCommand,
+func getCommands() map[string]struct {
+	string
+	command
+} {
+	return map[string]struct {
+		string
+		command
+	}{
+		"help": struct {
+			string
+			command
+		}{
+			"The help information",
+			helpCommand,
+		},
 	}
 }
-
 
 /**
  * Print help information to the user... Straight forward enough taht I'll

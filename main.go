@@ -2,10 +2,18 @@ package main
 
 import (
 	"flag"
+	"fmt"
 )
 
-type command func()
-type description string
+
+/*
+ * Represents a command available to the program
+ */
+type Command struct {
+	action      func()
+	description string
+}
+
 
 /**
  * Parse incomign flags, dispatch to appropriate command or show help
@@ -22,36 +30,30 @@ func main() {
 		commands := getCommands()
 
 		if cmd, ok := commands[args[0]]; ok {
-			cmd.command()
+			cmd.action()
 		} else {
 			helpCommand()
 		}
 	}
 }
 
+
 /**
  * Return a map of command-names (from user-input) to functions to
  * run.
  */
-func getCommands() map[string]struct {
-	string
-	command
-} {
-	return map[string]struct {
-		string
-		command
-	}{
-		"help": struct {
-			string
-			command
-		}{
-			"The help information",
+func getCommands() map[string]Command {
+	return map[string]Command{
+		"help": Command{
 			helpCommand,
+			"Prints this help message",
 		},
 	}
 }
 
 /**
+ * COMMAND 'help'
+ *
  * Print help information to the user... Straight forward enough taht I'll
  * just stop typing about it now.
  *
@@ -59,8 +61,12 @@ func getCommands() map[string]struct {
  *       command (not quite sure how to do this)
  */
 func helpCommand() {
+	commands := getCommands()
+
 	println("Usage: schema [command] [options]")
 	println("")
 	println("Commands:")
-	println("  help         Print this help message")
+	for k, v := range commands {
+		fmt.Printf("  %s         %s\n", k, v.description)
+	}
 }

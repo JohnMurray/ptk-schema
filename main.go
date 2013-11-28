@@ -40,7 +40,13 @@ func getCommands() map[string]func() {
 /**
  * Print help information to the user... Straight forward enough taht I'll
  * just stop typing about it now.
+ *
+ * TODO: define non-command help ouput in terms of flags specified for each
+ *       command (not quite sure how to do this)
  */
 func helpCommand() {
-	println("help command")
+	println("Usage: schema [command] [options]")
+	println("")
+	println("Commands:")
+	println("  help         Print this help message")
 }

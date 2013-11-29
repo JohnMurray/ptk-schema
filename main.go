@@ -1,10 +1,9 @@
 package main
 
 import (
-	"flag"
 	"fmt"
+	"os"
 )
-
 
 /*
  * Represents a command available to the program
@@ -14,29 +13,35 @@ type Command struct {
 	description string
 }
 
-
 /**
- * Parse incomign flags, dispatch to appropriate command or show help
- * message.
+ * Look at the first argument coming in and dispatch to the appropriate
+ * command-handler. Flag/option parsing will be done by each command
+ * separately.
  */
 func main() {
-	flag.Parse()
-	var args []string = flag.Args()
+	c := GetConfig()
+	fmt.Print("%v\n", c)
+	var args []string = os.Args[1:] // first arg is command-name
 
 	if len(args) == 0 {
-		println("No command was given\n")
 		helpCommand()
 	} else {
+		// reset command to avoid uneccessary warnings
+		if args[0] == "-h" || args[0] == "-help" || args[0] == "--help" {
+			args[0] = "help"
+		}
+
 		commands := getCommands()
 
+		// dispatch
 		if cmd, ok := commands[args[0]]; ok {
 			cmd.action()
 		} else {
+			fmt.Printf("Command not found '%s'\n", args[0])
 			helpCommand()
 		}
 	}
 }
-
 
 /**
  * Return a map of command-names (from user-input) to functions to
@@ -50,6 +55,14 @@ func getCommands() map[string]Command {
 		},
 	}
 }
+
+//
+// COMMANDS
+//
+// Each method below specifies a command that can be used with the tool. Any
+// utility functions that the commands use can be found below the commands in
+// the 'UTILITIES' section.
+//
 
 /**
  * COMMAND 'help'
@@ -66,7 +79,15 @@ func helpCommand() {
 	println("Usage: schema [command] [options]")
 	println("")
 	println("Commands:")
+
 	for k, v := range commands {
 		fmt.Printf("  %s         %s\n", k, v.description)
 	}
 }
+
+//
+// UTILITIES
+//
+// Represents a shared set of utilities that can be used to interact with
+// the alter-chain and underlying file-system.
+//

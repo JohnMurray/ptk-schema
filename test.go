@@ -21,7 +21,7 @@ func main() {
 	// json_string := string(file)
 	// fmt.Println(json_string)
 
-	var config JsonConfig
+	config := new(JsonConfig)
 	err := json.Unmarshal(file, &config)
 
 	if err != nil {

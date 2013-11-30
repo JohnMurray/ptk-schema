@@ -1,7 +1,13 @@
 package main
 
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+)
+
 type Config struct {
-	commentToken string
+	CommentToken string
 }
 
 /**
@@ -26,5 +32,50 @@ type Config struct {
  * Returns a Config struct
  */
 func GetConfig() *Config {
-	return new(Config)
+	var configLocations = []string{
+		"/etc/schema.conf",
+		"/usr/local/etc/schema.conf",
+		"$HOME/.schema.conf",
+		"./.schema.conf",
+	}
+
+	var config = new(Config)
+
+	for i := range configLocations {
+		config = conflateConfigs(config,
+			readAndParseJson(configLocations[i]))
+	}
+
+	return config
+}
+
+/**
+ * Givne two configs, take care of merging them where appropriate. Any fields
+ * that are specified within the override that are nil will be disregarded in
+ * terms of override. This means that nil cannot be treated as a useful value
+ * by the application.
+ */
+func conflateConfigs(original *Config, overrides *Config) *Config {
+	return overrides
+}
+
+/**
+ * Return a config object for a JSON config file given the file name. If no
+ * file happens to be found, then just return an empty Config object.
+ */
+func readAndParseJson(filename string) *Config {
+	config := new(Config)
+
+	file, e := ioutil.ReadFile(filename)
+	if e != nil {
+		fmt.Printf("%+v\n", e)
+		return config
+	}
+
+	err := json.Unmarshal(file, config)
+
+	if err != nil {
+	}
+
+	return config
 }

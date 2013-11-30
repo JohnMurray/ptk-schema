@@ -20,7 +20,7 @@ type Command struct {
  */
 func main() {
 	c := GetConfig()
-	fmt.Print("%v\n", c)
+	fmt.Printf("%+v\n", c.CommentToken)
 	var args []string = os.Args[1:] // first arg is command-name
 
 	if len(args) == 0 {

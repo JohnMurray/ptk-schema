@@ -1,6 +1,7 @@
 package main
 
 import (
+	"./config"
 	"fmt"
 	"os"
 )
@@ -19,7 +20,7 @@ type Command struct {
  * separately.
  */
 func main() {
-	c := GetConfig()
+	c := config.GetConfig()
 	fmt.Printf("%+v\n", c.CommentToken)
 	var args []string = os.Args[1:] // first arg is command-name
 
@@ -130,7 +131,9 @@ func verifySchemaDir() {
 }
 
 /**
- *
+ * Get's the reference of the last alter in the chain. If the chain is a
+ * divergent chain, then the longest chain shall contain the last alter in
+ * chain.
  *
  * TODO: implement
  */

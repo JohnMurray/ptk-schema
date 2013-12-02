@@ -53,6 +53,10 @@ func getCommands() map[string]Command {
 			helpCommand,
 			"Prints this help message",
 		},
+		"new": Command{
+			newCommand,
+			"Creates a new alter file (an up and possibly a down alter)",
+		},
 	}
 }
 
@@ -70,6 +74,8 @@ func getCommands() map[string]Command {
  * Print help information to the user... Straight forward enough taht I'll
  * just stop typing about it now.
  *
+ * USAGE: schema help|-h|--help
+ *
  * TODO: define non-command help ouput in terms of flags specified for each
  *       command (not quite sure how to do this)
  */
@@ -85,9 +91,49 @@ func helpCommand() {
 	}
 }
 
+/**
+ * COMMAND 'new'
+ *
+ * Creates a new 'up' and 'down' file-set which represents a single alter in
+ * the chain. The file will be created at the end (defined as the furthest
+ * point on the chain) of the chain.
+ *
+ * USAGE: schema new [options]
+ *
+ * Options:
+ *  -n  --no-down     Do not create a down alter (could fail 'check' command)
+ *
+ * TODO: implement
+ */
+func newCommand() {
+	verifySchemaDir()
+
+	tailRef := getTailRef()
+	println(tailRef)
+}
+
 //
 // UTILITIES
 //
 // Represents a shared set of utilities that can be used to interact with
 // the alter-chain and underlying file-system.
 //
+
+/**
+ * Verify that the current working directory is, in fact, a valid 'schema
+ * directory'. If it is not, try to initialize the directory as such.
+ *
+ * TODO: implement
+ */
+func verifySchemaDir() {
+
+}
+
+/**
+ *
+ *
+ * TODO: implement
+ */
+func getTailRef() string {
+	return ""
+}

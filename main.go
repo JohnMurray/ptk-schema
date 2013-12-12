@@ -1,7 +1,6 @@
 package main
 
 import (
-	"./config"
 	"fmt"
 	"os"
 )
@@ -20,7 +19,7 @@ type Command struct {
  * separately.
  */
 func main() {
-	c := config.GetConfig()
+	c := GetConfig()
 	fmt.Printf("%+v\n", c.CommentToken)
 	var args []string = os.Args[1:] // first arg is command-name
 

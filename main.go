@@ -106,36 +106,8 @@ func helpCommand() {
  * TODO: implement
  */
 func newCommand() {
-	verifySchemaDir()
+	// verifySchemaDir()
 
-	tailRef := getTailRef()
-	println(tailRef)
-}
-
-//
-// UTILITIES
-//
-// Represents a shared set of utilities that can be used to interact with
-// the alter-chain and underlying file-system.
-//
-
-/**
- * Verify that the current working directory is, in fact, a valid 'schema
- * directory'. If it is not, try to initialize the directory as such.
- *
- * TODO: implement
- */
-func verifySchemaDir() {
-
-}
-
-/**
- * Get's the reference of the last alter in the chain. If the chain is a
- * divergent chain, then the longest chain shall contain the last alter in
- * chain.
- *
- * TODO: implement
- */
-func getTailRef() string {
-	return ""
+	// tailRef := getTailRef()
+	// println(tailRef)
 }

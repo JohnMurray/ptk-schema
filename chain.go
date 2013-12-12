@@ -1,3 +1,10 @@
+/*
+ * File: chain.go
+ *
+ * Purpose: Contains all of the utilities related to obtaining, validating,
+ *			and working with alter-chains.
+ */
+
 package main
 
 import (
@@ -34,6 +41,18 @@ type Meta struct {
 	filename  string
 }
 
+// func GetMeta() []Meta* {
+	
+// }
+
+// func GetChain() []Chain* {
+// 	return GetChainWithMeta(GetMeta())
+// }
+
+// func GetChainWithMeta([]Meta*) []Chain* {
+// 	return []Chain*{}
+// }
+
 /**
  * For the current working directory, return a list of files that meet
  * the criteria to be an alter (fit the naming convention) if the CWD
@@ -56,7 +75,7 @@ func cwdIsSchemaDir() bool {
 		metaFile := currDir + string(os.PathSeparator) + metaFileName
 
 		_, err = os.Stat(metaFile)
-        return err == nil
+		return err == nil
 	}
 	return false
 }

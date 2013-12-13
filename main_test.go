@@ -5,6 +5,10 @@ import (
 	"testing"
 )
 
+//
+// HELPER FUNCTIONS
+//
+
 func testSetup(t *testing.T) {
 	// validate in project directory running tests
 	if _, err := os.Stat("main_test.go"); os.IsNotExist(err) {
@@ -26,12 +30,31 @@ func testTeardown(t *testing.T) {
 	}
 }
 
-func TestGetCurrentSchemDir(t *testing.T) {
+//
+// TEST METHODS
+//
+
+func TestVerifyCurrentDirIsASchemDir(t *testing.T) {
 	testSetup(t)
 	defer testTeardown(t)
+
+	if !cwdIsSchemaDir() {
+		wd, _ := os.Getwd()
+		t.Error("Current directory is not a schema directory: " + wd)
+	}
 }
 
-func TestFileLoad(t *testing.T) {
+func TestFileList(t *testing.T) {
 	testSetup(t)
 	defer testTeardown(t)
+
+	files, err := fileList()
+	if err != nil {
+		t.Errorf("Error loading file list - %v", err)
+		return
+	}
+
+	if len(files) == 0 {
+		t.Error("No files returned")
+	}
 }

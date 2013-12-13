@@ -42,7 +42,7 @@ type Meta struct {
 }
 
 // func GetMeta() []Meta* {
-	
+
 // }
 
 // func GetChain() []Chain* {
@@ -60,7 +60,7 @@ type Meta struct {
  * then return and error
  */
 func fileList() ([]string, error) {
-	if cwdIsSchemaDir() {
+	if !cwdIsSchemaDir() {
 		return nil, ErrNotSchemaDir
 	}
 	return []string{}, nil

@@ -1,11 +1,11 @@
 default: all
 
 
-all: build
+all: build test
 
 
 build:
-	go build -o bin/schema main.go config.go
+	go build -o bin/schema *.go
 
 test:
 	go test

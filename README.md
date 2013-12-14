@@ -1,6 +1,9 @@
 Programming Tool Kit - Schema Tool
 ==========
 
+
+[ ![Build status - Travis-ci][3] ][4]
+
 This projct is part of [my][1] personal toolkit (ptk). Since I'm really just getting
 started with this set of tools, this is my first. The `schema` tool is a 
 framework-agnostic and db-agnostic way of managing and versioning your schema. There 
@@ -33,3 +36,5 @@ For more information see the [wiki][2]
 
   [1]: http://johnmurray.io
   [2]: http://github.com/johnmurray/ptk-schema
+  [3]: https://secure.travis-ci.org/JohnMurray/ptk-schema.png
+  [4]: https://travis-ci.org/JohnMurray/ptk-schema

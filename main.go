@@ -26,8 +26,7 @@ var Debug bool = false
  */
 func main() {
 	SetDebugConfig()
-	c := GetConfig()
-	fmt.Printf("%+v\n", c.CommentToken)
+	// c := GetConfig()
 	var args []string = os.Args[1:] // first arg is command-name
 
 	if len(args) == 0 {

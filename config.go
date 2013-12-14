@@ -23,7 +23,10 @@ type Config struct {
  * TODO: implement method
  */
 func SetDebugConfig() {
-
+	debug := os.Getenv("SCHEMA_DEBUG")
+	if debug != "" {
+		Debug = true
+	}
 }
 
 /**

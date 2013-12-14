@@ -9,6 +9,8 @@ import (
 // HELPER FUNCTIONS
 //
 
+var config *Config
+
 func testSetup(t *testing.T) {
 	// validate in project directory running tests
 	if _, err := os.Stat("main_test.go"); os.IsNotExist(err) {
@@ -20,6 +22,9 @@ func testSetup(t *testing.T) {
 	if err := os.Chdir("./etc/test-env"); err != nil {
 		t.Fatal("Could not find test-directory './etc/test-env'")
 	}
+
+	// load config
+	config = GetConfig()
 }
 
 func testTeardown(t *testing.T) {
@@ -48,7 +53,7 @@ func TestFileList(t *testing.T) {
 	testSetup(t)
 	defer testTeardown(t)
 
-	files, err := fileList()
+	files, err := fileList(config)
 	if err != nil {
 		t.Errorf("Error loading file list - %v", err)
 		return
@@ -57,4 +62,9 @@ func TestFileList(t *testing.T) {
 	if len(files) == 0 {
 		t.Error("No files returned")
 	}
+}
+
+func TestParseMeta(t *testing.T) {
+	testSetup(t)
+	defer testTeardown(t)
 }

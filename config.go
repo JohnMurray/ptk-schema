@@ -10,6 +10,7 @@ import (
 
 type Config struct {
 	CommentToken string
+	AlterExt     string
 }
 
 /**
@@ -36,7 +37,7 @@ type Config struct {
 func GetConfig() *Config {
 	var config = new(Config)
 
-    var configLocations = getConfigPaths()
+	var configLocations = getConfigPaths()
 
 	for i := range configLocations {
 		config = conflateConfigs(config,
@@ -77,6 +78,12 @@ func conflateConfigs(original *Config, overrides *Config) *Config {
 		newConf.CommentToken = overrides.CommentToken
 	} else {
 		newConf.CommentToken = original.CommentToken
+	}
+
+	if overrides.AlterExt != "" {
+		newConf.AlterExt = overrides.AlterExt
+	} else {
+		newConf.AlterExt = original.AlterExt
 	}
 
 	return newConf

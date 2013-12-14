@@ -9,7 +9,9 @@ package main
 
 import (
 	"errors"
+	"io/ioutil"
 	"os"
+	"strings"
 )
 
 type Direction int
@@ -59,11 +61,28 @@ type Meta struct {
  * is a schema directory. If the current directory is not a schema dir,
  * then return and error
  */
-func fileList() ([]string, error) {
+func fileList(conf *Config) ([]string, error) {
 	if !cwdIsSchemaDir() {
 		return nil, ErrNotSchemaDir
 	}
-	return []string{}, nil
+
+	files, err := ioutil.ReadDir(".")
+	if err != nil {
+		return nil, err
+	}
+
+	alterFiles := make([]string, len(files), cap(files))
+	i := 0
+	for _, file := range files {
+		if !file.IsDir() && strings.Contains(file.Name(), conf.AlterExt) {
+			alterFiles[i] = file.Name()
+			i += 1
+		}
+	}
+
+	alterFiles = alterFiles[:i]
+
+	return alterFiles, nil
 }
 
 /**

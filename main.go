@@ -13,12 +13,19 @@ type Command struct {
 	description string
 }
 
+/*
+ * Determines if debug information should be printed out during program
+ * execution. Should be set from environment variable.
+ */
+var Debug bool = false
+
 /**
  * Look at the first argument coming in and dispatch to the appropriate
  * command-handler. Flag/option parsing will be done by each command
  * separately.
  */
 func main() {
+	SetDebugConfig()
 	c := GetConfig()
 	fmt.Printf("%+v\n", c.CommentToken)
 	var args []string = os.Args[1:] // first arg is command-name
@@ -27,8 +34,10 @@ func main() {
 		helpCommand()
 	} else {
 		// reset command to avoid uneccessary warnings
-		if args[0] == "-h" || args[0] == "-help" || args[0] == "--help" {
+		if args[0] == "-h" || args[0] == "--help" {
 			args[0] = "help"
+		} else if args[0] == "-v" || args[0] == "--version" {
+			args[0] = "version"
 		}
 
 		commands := getCommands()
@@ -57,6 +66,10 @@ func getCommands() map[string]Command {
 			newCommand,
 			"Creates a new alter file (an up and possibly a down alter)",
 		},
+		"version": Command{
+			versionCommand,
+			"Lists the current version",
+		},
 	}
 }
 
@@ -74,7 +87,7 @@ func getCommands() map[string]Command {
  * Print help information to the user... Straight forward enough taht I'll
  * just stop typing about it now.
  *
- * USAGE: schema help|-h|--help
+ * USAGE: schema help|-h|--help|
  *
  * TODO: define non-command help ouput in terms of flags specified for each
  *       command (not quite sure how to do this)
@@ -87,8 +100,19 @@ func helpCommand() {
 	println("Commands:")
 
 	for k, v := range commands {
-		fmt.Printf("  %s         %s\n", k, v.description)
+		fmt.Printf("  %-8s         %s\n", k, v.description)
 	}
+}
+
+/**
+ * COMMAND 'version'
+ *
+ * Prints out the current version.
+ *
+ * USAGE: schema version|-v|--version
+ */
+func versionCommand() {
+	fmt.Printf("Version: %s\n", Version)
 }
 
 /**

@@ -14,6 +14,19 @@ type Config struct {
 }
 
 /**
+ * The program maintains a single debug boolean value 'Debug' in the main
+ * package. This value is by default false, but can be set to true when
+ * the environment variable SCHEMA_DEBUG is set to true. This function
+ * looks for that environment variable and updates the local debug setting
+ * appropriately.
+ *
+ * TODO: implement method
+ */
+func SetDebugConfig() {
+
+}
+
+/**
  * Return the config for the schema tool. This config could either be global
  * or user-local/provided depending on what is found. The tool will look in
  * the following places, in order. Configs found 'later' (in the order
@@ -98,13 +111,16 @@ func readAndParseJson(filename string) *Config {
 
 	file, e := ioutil.ReadFile(filename)
 	if e != nil {
-		fmt.Printf("%+v\n", e)
+		if Debug {
+			fmt.Printf("Could not read config-file: %s\n", e)
+		}
 		return config
 	}
 
 	err := json.Unmarshal(file, config)
 
 	if err != nil {
+		fmt.Printf("Could not read config-file: %s\n", file)
 	}
 
 	return config

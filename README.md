@@ -19,7 +19,7 @@ tracking changes in your database, and aiding with development within a large te
 ## Installation
 
 Currently there is no proper installation script. But you can do a local build
-fairly simply and will need `go` installed (>= 1.1.2).
+fairly simply and will need `go` installed (>= 1.0.2).
 
 ```sh
 git checkout git://github.com/JohnMurray/ptk-schema schema

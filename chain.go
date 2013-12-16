@@ -61,7 +61,7 @@ type Meta struct {
  * is a schema directory. If the current directory is not a schema dir,
  * then return and error
  */
-func fileList(conf *Config) ([]string, error) {
+func fileList(conf *AppConfig) ([]string, error) {
 	if !cwdIsSchemaDir() {
 		return nil, ErrNotSchemaDir
 	}

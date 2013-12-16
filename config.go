@@ -8,7 +8,7 @@ import (
 	"os/user"
 )
 
-type Config struct {
+type AppConfig struct {
 	CommentToken string
 	AlterExt     string
 }
@@ -50,8 +50,8 @@ func SetDebugConfig() {
  *
  * Returns a Config struct
  */
-func GetConfig() *Config {
-	var config = new(Config)
+func GetConfig() *AppConfig {
+	var config = new(AppConfig)
 
 	var configLocations = getConfigPaths()
 
@@ -87,8 +87,8 @@ func getConfigPaths() []string {
  * terms of override. This means that nil cannot be treated as a useful value
  * by the application.
  */
-func conflateConfigs(original *Config, overrides *Config) *Config {
-	newConf := new(Config)
+func conflateConfigs(original *AppConfig, overrides *AppConfig) *AppConfig {
+	newConf := new(AppConfig)
 
 	if overrides.CommentToken != "" {
 		newConf.CommentToken = overrides.CommentToken
@@ -109,8 +109,8 @@ func conflateConfigs(original *Config, overrides *Config) *Config {
  * Return a config object for a JSON config file given the file name. If no
  * file happens to be found, then just return an empty Config object.
  */
-func readAndParseJson(filename string) *Config {
-	config := new(Config)
+func readAndParseJson(filename string) *AppConfig {
+	config := new(AppConfig)
 
 	file, e := ioutil.ReadFile(filename)
 	if e != nil {

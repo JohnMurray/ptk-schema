@@ -9,7 +9,7 @@ import (
 // HELPER FUNCTIONS
 //
 
-var config *Config
+var config *AppConfig
 
 func testSetup(t *testing.T) {
 	// validate in project directory running tests

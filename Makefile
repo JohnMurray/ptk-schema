@@ -1,6 +1,6 @@
 default: all
 
-all: build test
+all: clean build test
 
 create-version-file:
 	echo "package main" > version.go
@@ -10,6 +10,10 @@ create-version-file:
 build: create-version-file
 	mkdir -p ./bin
 	go build -o ./bin/schema *.go
+
+clean:
+	rm -rf ./bin/
+	rm -rf version.go
 
 test:
 	go test

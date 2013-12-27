@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 )
@@ -13,12 +14,6 @@ type Command struct {
 	description string
 }
 
-/*
- * Determines if debug information should be printed out during program
- * execution. Should be set from environment variable.
- */
-var Debug bool = false
-
 /**
  * Look at the first argument coming in and dispatch to the appropriate
  * command-handler. Flag/option parsing will be done by each command
@@ -26,7 +21,7 @@ var Debug bool = false
  */
 func main() {
 	SetDebugConfig()
-	// c := GetConfig()
+	SetAppConfig()
 	var args []string = os.Args[1:] // first arg is command-name
 
 	if len(args) == 0 {
@@ -121,7 +116,7 @@ func versionCommand() {
  * the chain. The file will be created at the end (defined as the furthest
  * point on the chain) of the chain.
  *
- * USAGE: schema new [options]
+ * USAGE: schema new [options] filename
  *
  * Options:
  *  -n  --no-down     Do not create a down alter (could fail 'check' command)
@@ -129,7 +124,14 @@ func versionCommand() {
  * TODO: implement
  */
 func newCommand() {
-	// verifySchemaDir()
+	if !cwdIsSchemaDir() {
+		fmt.Print("The current directory contains not alters. Try running 'init' first.\n")
+		os.Exit(1)
+	}
+
+	// parse stuff
+	flag.Bool("name", true, "usage")
+	flag.Parse()
 
 	// tailRef := getTailRef()
 	// println(tailRef)

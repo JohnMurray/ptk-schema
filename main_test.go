@@ -9,8 +9,6 @@ import (
 // HELPER FUNCTIONS
 //
 
-var config *AppConfig
-
 func testSetup(t *testing.T) {
 	// validate in project directory running tests
 	if _, err := os.Stat("main_test.go"); os.IsNotExist(err) {
@@ -24,7 +22,7 @@ func testSetup(t *testing.T) {
 	}
 
 	// load config
-	config = GetConfig()
+	SetAppConfig()
 }
 
 func testTeardown(t *testing.T) {
@@ -53,7 +51,7 @@ func TestFileList(t *testing.T) {
 	testSetup(t)
 	defer testTeardown(t)
 
-	files, err := fileList(config)
+	files, err := fileList()
 	if err != nil {
 		t.Errorf("Error loading file list - %v", err)
 		return

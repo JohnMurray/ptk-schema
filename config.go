@@ -48,9 +48,9 @@ func SetDebugConfig() {
  * returned. Failure to do so will result in a runtime-panic with a detailed
  * message of what went wrong.
  *
- * Returns a Config struct
+ * Returns nothing, but sets the global Config object
  */
-func GetConfig() *AppConfig {
+func SetAppConfig() {
 	var config = new(AppConfig)
 
 	var configLocations = getConfigPaths()
@@ -60,7 +60,7 @@ func GetConfig() *AppConfig {
 			readAndParseJson(configLocations[i]))
 	}
 
-	return config
+	Config = config
 }
 
 /**

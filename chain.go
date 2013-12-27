@@ -8,7 +8,6 @@
 package main
 
 import (
-	"errors"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -19,11 +18,6 @@ type Direction int
 const (
 	up   Direction = iota
 	down Direction = iota
-)
-
-var (
-	ErrNotSchemaDir = errors.New(
-		"user: current directory is not a valid schema directory")
 )
 
 const metaFileName = ".schema.meta"
@@ -47,11 +41,11 @@ type Meta struct {
 
 // }
 
-// func GetChain() []Chain* {
+// func GetChain() Chain* {
 // 	return GetChainWithMeta(GetMeta())
 // }
 
-// func GetChainWithMeta([]Meta*) []Chain* {
+// func getChainWithMeta([]Meta*) Chain* {
 // 	return []Chain*{}
 // }
 
@@ -61,7 +55,7 @@ type Meta struct {
  * is a schema directory. If the current directory is not a schema dir,
  * then return and error
  */
-func fileList(conf *AppConfig) ([]string, error) {
+func fileList() ([]string, error) {
 	if !cwdIsSchemaDir() {
 		return nil, ErrNotSchemaDir
 	}
@@ -74,7 +68,7 @@ func fileList(conf *AppConfig) ([]string, error) {
 	alterFiles := make([]string, len(files), cap(files))
 	i := 0
 	for _, file := range files {
-		if !file.IsDir() && strings.Contains(file.Name(), conf.AlterExt) {
+		if !file.IsDir() && strings.Contains(file.Name(), Config.AlterExt) {
 			alterFiles[i] = file.Name()
 			i += 1
 		}

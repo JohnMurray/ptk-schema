@@ -2,18 +2,29 @@ package main
 
 import (
 	"./utils/chain"
+	"./utils/config"
 	"flag"
 	"fmt"
 	"os"
 )
 
 /*
+ * Represents data that is required by the command
+ */
+type CommandContext struct {
+	config *config.AppConfig
+}
+
+/*
  * Represents a command available to the program
  */
 type Command struct {
-	action      func()
+	action      func(CommandContext)
 	description string
+	context     CommandContext
 }
+
+const META_FILENAME = ".schema.meta"
 
 /**
  * Look at the first argument coming in and dispatch to the appropriate
@@ -21,12 +32,10 @@ type Command struct {
  * separately.
  */
 func main() {
-	SetDebugConfig()
-	SetAppConfig()
 	var args []string = os.Args[1:] // first arg is command-name
 
 	if len(args) == 0 {
-		helpCommand()
+		helpCommand(CommandContext{})
 	} else {
 		// reset command to avoid uneccessary warnings
 		if args[0] == "-h" || args[0] == "--help" {
@@ -39,10 +48,10 @@ func main() {
 
 		// dispatch
 		if cmd, ok := commands[args[0]]; ok {
-			cmd.action()
+			cmd.action(cmd.context)
 		} else {
 			fmt.Printf("Command not found '%s'\n", args[0])
-			helpCommand()
+			helpCommand(commands["help"].context)
 		}
 	}
 }
@@ -52,18 +61,24 @@ func main() {
  * run.
  */
 func getCommands() map[string]Command {
+	context := CommandContext{
+		config: config.GetAppConfig(),
+	}
 	return map[string]Command{
 		"help": Command{
 			helpCommand,
 			"Prints this help message",
+			context,
 		},
 		"new": Command{
 			newCommand,
 			"Creates a new alter file (an up and possibly a down alter)",
+			context,
 		},
 		"version": Command{
 			versionCommand,
 			"Lists the current version",
+			context,
 		},
 	}
 }
@@ -87,7 +102,7 @@ func getCommands() map[string]Command {
  * TODO: define non-command help ouput in terms of flags specified for each
  *       command (not quite sure how to do this)
  */
-func helpCommand() {
+func helpCommand(cmdcontext CommandContext) {
 	commands := getCommands()
 
 	println("Usage: schema [command] [options]")
@@ -106,7 +121,7 @@ func helpCommand() {
  *
  * USAGE: schema version|-v|--version
  */
-func versionCommand() {
+func versionCommand(cmdcontext CommandContext) {
 	fmt.Printf("Version: %s\n", Version)
 }
 
@@ -124,9 +139,12 @@ func versionCommand() {
  *
  * TODO: implement
  */
-func newCommand() {
-	// context := &chain.ChainContext{alterExt: ".sql", metaFileName: ".schema.meta"}
-	context := &chain.ChainContext{AlterExt: ".sql", MetaFileName: ".schema.meta"}
+func newCommand(cmdcontext CommandContext) {
+	context := &chain.ChainContext{
+		AlterExt:     cmdcontext.config.AlterExt,
+		MetaFileName: META_FILENAME,
+	}
+
 	if !chain.CwdIsSchemaDir(context) {
 		fmt.Print("The current directory contains not alters. Try running 'init' first.\n")
 		os.Exit(1)

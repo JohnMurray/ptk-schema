@@ -20,9 +20,6 @@ func testSetup(t *testing.T) {
 	if err := os.Chdir("./etc/test-env"); err != nil {
 		t.Fatal("Could not find test-directory './etc/test-env'")
 	}
-
-	// load config
-	SetAppConfig()
 }
 
 func testTeardown(t *testing.T) {

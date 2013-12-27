@@ -7,13 +7,13 @@ default: all
 
 all: clean build test
 
-create-version-file:
+build: 
+	@echo "$(OK_COLOR)==> Building $(NO_COLOR)"
+
 	echo "package main" > version.go
 	echo "" >> version.go
 	echo "var Version string = \"`cat .version`\"" >> version.go
 
-build: create-version-file
-	@echo "$(OK_COLOR)==> Building $(NO_COLOR)"
 	mkdir -p ./bin
 	go build -o ./bin/schema *.go
 

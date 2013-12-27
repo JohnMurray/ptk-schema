@@ -1,7 +1,7 @@
 package main
 
 import (
-	. "./utils/chain"
+	"./utils/chain"
 	"flag"
 	"fmt"
 	"os"
@@ -125,7 +125,9 @@ func versionCommand() {
  * TODO: implement
  */
 func newCommand() {
-	if !CwdIsSchemaDir() {
+	// context := &chain.ChainContext{alterExt: ".sql", metaFileName: ".schema.meta"}
+	context := &chain.ChainContext{AlterExt: ".sql", MetaFileName: ".schema.meta"}
+	if !chain.CwdIsSchemaDir(context) {
 		fmt.Print("The current directory contains not alters. Try running 'init' first.\n")
 		os.Exit(1)
 	}

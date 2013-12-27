@@ -21,8 +21,6 @@ const (
 	down Direction = iota
 )
 
-const metaFileName = ".schema.meta"
-
 type Chain struct {
 	ref      string
 	backref  *Chain
@@ -39,8 +37,8 @@ type Meta struct {
 }
 
 type ChainContext struct {
-	alterExt     string
-	metaFileName string
+	AlterExt     string
+	MetaFileName string
 }
 
 var (
@@ -67,7 +65,7 @@ var (
  * then return and error
  */
 func fileList(context *ChainContext) ([]string, error) {
-	if !CwdIsSchemaDir() {
+	if !CwdIsSchemaDir(context) {
 		return nil, ErrNotSchemaDir
 	}
 
@@ -79,7 +77,7 @@ func fileList(context *ChainContext) ([]string, error) {
 	alterFiles := make([]string, len(files), cap(files))
 	i := 0
 	for _, file := range files {
-		if !file.IsDir() && strings.Contains(file.Name(), context.alterExt) {
+		if !file.IsDir() && strings.Contains(file.Name(), context.AlterExt) {
 			alterFiles[i] = file.Name()
 			i += 1
 		}
@@ -94,9 +92,9 @@ func fileList(context *ChainContext) ([]string, error) {
  * Check whether the current working directory is a schema directory. This
  * can be checked by looking for the .schema.meta file within the CWD.
  */
-func CwdIsSchemaDir() bool {
+func CwdIsSchemaDir(context *ChainContext) bool {
 	if currDir, err := os.Getwd(); err == nil {
-		metaFile := currDir + string(os.PathSeparator) + metaFileName
+		metaFile := currDir + string(os.PathSeparator) + context.MetaFileName
 
 		_, err = os.Stat(metaFile)
 		return err == nil

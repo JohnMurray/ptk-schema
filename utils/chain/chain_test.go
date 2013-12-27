@@ -30,7 +30,38 @@ func testTeardown(t *testing.T) {
 	}
 }
 
-func TestDoNothing(t *testing.T) {
+//
+// TEST METHODS
+//
+
+func TestVerifyCurrentDirIsASchemDir(t *testing.T) {
 	testSetup(t)
-	testTeardown(t)
+	defer testTeardown(t)
+
+	context := &ChainContext{MetaFileName: ".schema.meta"}
+	if !CwdIsSchemaDir(context) {
+		wd, _ := os.Getwd()
+		t.Error("Current directory is not a schema directory: " + wd)
+	}
+}
+
+func TestFileList(t *testing.T) {
+	testSetup(t)
+	defer testTeardown(t)
+
+	context := &ChainContext{AlterExt: ".sql", MetaFileName: ".schema.meta"}
+	files, err := fileList(context)
+	if err != nil {
+		t.Errorf("Error loading file list - %v", err)
+		return
+	}
+
+	if len(files) == 0 {
+		t.Error("No files returned")
+	}
+}
+
+func TestParseMeta(t *testing.T) {
+	testSetup(t)
+	defer testTeardown(t)
 }

@@ -1,3 +1,8 @@
+NO_COLOR=\033[0m
+OK_COLOR=\033[32;01m
+ERROR_COLOR=\033[31;01m
+WARN_COLOR=\033[33;01m
+
 default: all
 
 all: clean build test
@@ -8,15 +13,18 @@ create-version-file:
 	echo "var Version string = \"`cat .version`\"" >> version.go
 
 build: create-version-file
+	@echo "$(OK_COLOR)==> Building $(NO_COLOR)"
 	mkdir -p ./bin
 	go build -o ./bin/schema *.go
 
 clean:
+	@echo "$(OK_COLOR)==> Cleaning$(NO_COLOR)"
 	rm -rf ./bin/
 	rm -rf version.go
 
 test:
-	go test
+	@echo "$(OK_COLOR)==> Testing Schema...$(NO_COLOR)"
+	go test ./...
 
 todo:
 	@echo "TODOs: "

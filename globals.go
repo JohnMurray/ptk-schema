@@ -1,9 +1,5 @@
 package main
 
-import (
-    "errors"
-)
-
 //
 // GLOBAL
 //
@@ -24,11 +20,3 @@ var Debug bool = false
  * on overrides.
  */
 var Config *AppConfig
-
-/*
- * Global set of errors that the applciation can return.
- */
-var (
-	ErrNotSchemaDir = errors.New(
-		"user: current directory is not a valid schema directory")
-)

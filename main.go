@@ -1,6 +1,7 @@
 package main
 
 import (
+	. "./utils/chain"
 	"flag"
 	"fmt"
 	"os"
@@ -124,7 +125,7 @@ func versionCommand() {
  * TODO: implement
  */
 func newCommand() {
-	if !cwdIsSchemaDir() {
+	if !CwdIsSchemaDir() {
 		fmt.Print("The current directory contains not alters. Try running 'init' first.\n")
 		os.Exit(1)
 	}

@@ -1,13 +1,14 @@
 /*
- * File: chain.go
+ * File: utils/chain/main.go
  *
  * Purpose: Contains all of the utilities related to obtaining, validating,
- *			and working with alter-chains.
+ *          and working with alter-chains.
  */
 
-package main
+package chain
 
 import (
+	"errors"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -37,16 +38,26 @@ type Meta struct {
 	filename  string
 }
 
+type ChainContext struct {
+	alterExt     string
+	metaFileName string
+}
+
+var (
+	ErrNotSchemaDir = errors.New(
+		"user: current directory is not a valid schema directory")
+)
+
 // func GetMeta() []Meta* {
 
 // }
 
 // func GetChain() Chain* {
-// 	return GetChainWithMeta(GetMeta())
+//  return GetChainWithMeta(GetMeta())
 // }
 
 // func getChainWithMeta([]Meta*) Chain* {
-// 	return []Chain*{}
+//  return []Chain*{}
 // }
 
 /**
@@ -55,8 +66,8 @@ type Meta struct {
  * is a schema directory. If the current directory is not a schema dir,
  * then return and error
  */
-func fileList() ([]string, error) {
-	if !cwdIsSchemaDir() {
+func fileList(context *ChainContext) ([]string, error) {
+	if !CwdIsSchemaDir() {
 		return nil, ErrNotSchemaDir
 	}
 
@@ -68,7 +79,7 @@ func fileList() ([]string, error) {
 	alterFiles := make([]string, len(files), cap(files))
 	i := 0
 	for _, file := range files {
-		if !file.IsDir() && strings.Contains(file.Name(), Config.AlterExt) {
+		if !file.IsDir() && strings.Contains(file.Name(), context.alterExt) {
 			alterFiles[i] = file.Name()
 			i += 1
 		}
@@ -83,7 +94,7 @@ func fileList() ([]string, error) {
  * Check whether the current working directory is a schema directory. This
  * can be checked by looking for the .schema.meta file within the CWD.
  */
-func cwdIsSchemaDir() bool {
+func CwdIsSchemaDir() bool {
 	if currDir, err := os.Getwd(); err == nil {
 		metaFile := currDir + string(os.PathSeparator) + metaFileName
 

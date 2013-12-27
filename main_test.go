@@ -37,32 +37,7 @@ func testTeardown(t *testing.T) {
 // TEST METHODS
 //
 
-func TestVerifyCurrentDirIsASchemDir(t *testing.T) {
-	testSetup(t)
-	defer testTeardown(t)
-
-	if !cwdIsSchemaDir() {
-		wd, _ := os.Getwd()
-		t.Error("Current directory is not a schema directory: " + wd)
-	}
-}
-
-func TestFileList(t *testing.T) {
-	testSetup(t)
-	defer testTeardown(t)
-
-	files, err := fileList()
-	if err != nil {
-		t.Errorf("Error loading file list - %v", err)
-		return
-	}
-
-	if len(files) == 0 {
-		t.Error("No files returned")
-	}
-}
-
-func TestParseMeta(t *testing.T) {
+func TestDoNothing(t *testing.T) {
 	testSetup(t)
 	defer testTeardown(t)
 }

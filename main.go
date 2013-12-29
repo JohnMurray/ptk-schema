@@ -1,10 +1,10 @@
 package main
 
 import (
-	"./utils/chain"
-	"./utils/config"
 	"flag"
 	"fmt"
+	"github.com/JohnMurray/ptk-schema/utils/chain"
+	"github.com/JohnMurray/ptk-schema/utils/config"
 	"os"
 )
 
@@ -150,7 +150,7 @@ func newCommand(cmdcontext CommandContext) {
 		os.Exit(1)
 	}
 
-	// parse stuff
+	// parse options
 	flag.Bool("name", true, "usage")
 	flag.Parse()
 
